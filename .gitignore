@@ -1,4 +1,4 @@
 # ignore all LaTeX supporting files
-**/.aux
-**/.log
-**/.out
+**/*.aux
+**/*.log
+**/*.out
