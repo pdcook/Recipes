@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    \vegetarian
+    \prepcooktime{10 minutes}{20 minutes}
+    \snack
+    \serves{Many}
+    \sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Oatmeal Raisin Granola Bars}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\begin{multicols}{2}
+\ingredients[Solids]
+\begin{itemize}
+    \item 2 cups Plain Rolled Oats
+    \item 1/2 tsp Baking Soda
+    \item 1/2 tsp Salt
+    \item 3/4 tsp Cinnamon
+    \item 1/2 cup Rice Crispies
+    \item 3/4 cup Oat Flour
+    \item 1/4 cup Brown Sugar
+    \item 1/2 cup Unsweetened Raisins (any variety)
+    \item 1/3 cup Unsweetened Coconut Flakes
+\end{itemize}
+\columnbreak
+\ingredients[Liquids]
+\begin{itemize}
+    \item 1 tsp Pure Vanilla Extract
+    \item 1 Overripe Banana, Mashed
+    \item 1/4 cup Vegetable Oil
+    \item 1/2 cup Filtered Clover or Wildflower Honey
+\end{itemize}
+\end{multicols}
+
+\instructions
+Preheat oven to \temp{275}. Procure a large mixing bowl, small mixing bowl, and large baking sheet.
+\begin{enumerate}
+    \item Mix together solids in large mixing bowl. Optionally, chop or lightly blend the raisins first.
+    \item Mix together the liquids in the separate small mixing bowl. Optionally add about another 1/8 cup of honey for stickier bars.
+    \item Stir liquids into solids, until homogeneous.
+    \item Line a large baking sheet with parchment paper, then spread mixture onto sheet. Use another piece of parchment paper to press the mixture down firmly and evenly. The final thickness will determine the consistency of the final product: aim for about 1/2 cm thick.
+    \item Bake on middle rack until evenly dark golden brown. Should be around 20 minutes.
+    \item Remove from oven and allow to cool until it is almost cool enough to touch, then place in freezer. Once it has hardened, remove and cut as desired. Store in airtight container or bag. Eat within two weeks.
+\end{enumerate}
+
+\end{document}
