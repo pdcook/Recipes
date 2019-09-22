@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \noredmeat
+    \prepcooktime{5 minutes}{45 minutes}
+    \dinner
+    \serves{4}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Turkey Meatloaf}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\begin{multicols}{2}
+\ingredients[For the Loaf]
+\begin{itemize}
+    \item 1 lb Ground Turkey (Not Rolls)
+    \item 2/3 cup Dry Breadcrumbs
+    \item 1/2 Small Onion, Minced
+    \item 3/4 cup Whole Milk
+    \item 1 Egg, Beaten
+    \item 1 tsp Soy Sauce
+    \item 1/2 tsp Seasoned Pepper
+\end{itemize}
+\columnbreak
+\ingredients[For the Sauce]
+\begin{itemize}
+    \item 1/3 cup Ketchup
+    \item 2 tbsp Brown Sugar
+    \item 1 tbsp Yellow Mustard
+\end{itemize}
+\end{multicols}
+
+\instructions
+Preheat oven to \temp{350}. Procure aluminum foil, a cookie sheet, a large mixing bowl, and a small mixing bowl.
+\begin{enumerate}
+    \item In the large mixing bowl, combine all the incredients for the loaf together. Fold gently to combine; don't overmix. The mixture should not be homogeneous.
+    \item In the small mixing bowl, stir together the ingredients for the sauce until homogeneous.
+    \item Place the loaf mixture onto the cookie sheet lined with aluminum foil. Shape it into a rectangle about $1\frac{1}{2}$ inches thick.
+    \item Make a small ditch in the center of the loaf, just enough for all of the sauce. A ditch too deep with lead to problems when trying to cook it equally. Fill the ditch with the sauce.
+    \item Bake for $40-45$ minutes, until internal temperature is \temp{160} and juices run clear.
+    \item Let sit for $10$ minutes. Cut as desired and serve hot---or cold after refrigerating.
+\end{enumerate}
+
+\end{document}
