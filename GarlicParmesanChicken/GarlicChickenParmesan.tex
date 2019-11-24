@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \noredmeat
+    \prepcooktime{30 minutes}{8 hours}
+    \dinner
+    \serves{6}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Garlic Chicken Parmesan}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\begin{multicols}{2}
+\begin{itemize}
+    \item 3 lb Chicken Breast
+    \item 3 Baby Red Potatoes
+    \item 10 Cloves Garlic
+    \item 4 tbsp Irish Butter
+    \item 4 tbsp Fresh Thyme
+    \item 4 tbsp Fresh Chopped Parsley
+    \item Grated Parmesan
+    \item Olive Oil
+\end{itemize}
+\columnbreak
+\end{multicols}
+
+\instructions
+Procure a medium-large crock-pot and a medium to large skillet.
+\begin{enumerate}
+    \item Cut the chicken into pieces smaller than a fist, then season the pieces with salt and pepper.
+    \item Heat 1 to 2 tbsp of olive oil in the skillet on medium-high heat.
+    \item Sear the chicken on all sides until golden brown. About 3 minutes per side.
+    \item Wash and quarter the potatoes. Chop the garlic and parsely. Pull the leaves from the thyme. Add all to crock-pot.
+    \item Add the chicken, butter, 4 heaping tbsp of grated parmesan, and 4 tbsp of oil to the crock-pot and season generously with salt and pepper. Mix everything together.
+    \item Set the crock-pot pot to low and cook for 8 hours, occasionally stirring. Alternatively, set to high for 4 hours.
+    \item Garnish with parmesan to taste and serve.
+\end{enumerate}
+
+\end{document}
