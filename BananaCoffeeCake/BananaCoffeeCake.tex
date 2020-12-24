@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+\usepackage[left=0.5in, right=0.5in]{geometry}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \prepcooktime{30 minutes}{45 minutes}
+    \Dessert
+    \serves{9}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{minipage}{\textwidth}
+% start the recipe with the \recipe command
+\recipe{Banana Coffee Cake}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\begin{multicols*}{3}
+\begin{minipage}{\linewidth}
+\ingredients[Cake]
+\begin{itemize}
+    \item $3$ Overripe Bananas, Mashed
+    \item $2$ Large Eggs
+    \item $1~\frac{1}{4}$~cups All Purpose Flour
+    \item $\frac{3}{4}$~cup Granulated Sugar
+    \item $\frac{1}{2}$~cup Unsalted Butter, Melted
+    \item $\frac{1}{2}$~cup Plain Greek Yogurt
+    \item $\frac{1}{4}$~cup Milk
+    \item $1$~tsp Vanilla Extract
+    \item $\frac{3}{4}$~tsp Baking Soda
+    \item $\frac{1}{2}$~tsp Ground Cinnamon
+    \item $\frac{1}{2}$~tsp Salt
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Cinnamon Sugar Swirl]
+\begin{itemize}
+    \item $\frac{1}{2}$~cup Brown Sugar
+    \item $2$~tsp Ground Cinnamon
+    \item a pinch of Salt
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Crumb Topping]
+\begin{itemize}
+    \item $1$~cup All Purpose Flour
+    \item $\frac{2}{3}$~cup Granulated Sugar
+    \item $\frac{1}{2}$~cup Unsalted Butter, Softened
+    \item $\frac{1}{4}$~tsp Ground Cinnamon
+    \item $\frac{1}{4}$~tsp Salt
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+
+\instructions
+Preheat oven to \temp{350}. Procure a $9~\mathrm{in.}\times9~\mathrm{in.}$ baking pan and line with parchment paper or spray with nonstick cooking spray.
+\begin{enumerate}
+    \item In a large mixing bowl, combine the wet ingredients for the cake and mix well.
+    \item In a separate bowl, combine the dry ingredients for the cake and mix well.
+    \item Add the dry ingredients to the wet ingredients, stirring constantly as they are added. Mix until just combined.
+    \item Set aside the batter.
+    \item In a small bowl, combine the ingredients for the cinnamon sugar swirl and mix well.
+    \item In a separate small bowl, combine the ingredients for the crumb topping. Use a fork to cut the butter into the dry ingredients. Continue until the mixture forms small clumps and has the texture of wet sand.
+    \item Retrieve the batter and baking pan. Pour half the batter into the pan and wait for it to settle evenly. Spread the cinnamon sugar swirl over the layer of batter, then pour the remaining batter over the cinnamon sugar. Finally, evenly spread the crumble topping over the top.
+    \item Bake for $45$ to $55$ minutes, until a knife inserted comes out mostly clean. Allow to cool before serving. Store in fridge for up to a week. Reheats well when covered in microwave.
+\end{enumerate}
+
+\spewfootnotes
+\end{minipage}
+
+\end{document}
