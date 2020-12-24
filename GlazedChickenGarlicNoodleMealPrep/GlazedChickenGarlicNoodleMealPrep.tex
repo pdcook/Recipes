@@ -1,0 +1,222 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+\usepackage[left=0.5in, right=0.5in, top=1in, bottom=1in]{geometry}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \noredmeat
+    \prepcooktime{Overnight + 1 hour}{1 hour}
+    \lunch
+    \serves{6}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{minipage}{\textwidth}
+% start the recipe with the \recipe command
+\recipe{Glazed Chicken and Garlic Noodle Meal Prep}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+% begin writing the recipe
+\section*{\underline{Chicken}}
+\ingredients
+
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Chicken]
+\vspace{-1em}
+\begin{itemize}
+    \item 8 boneless, skinless chicken thighs
+    \item 1/2 tbsp vegetable oil
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Garnish]
+\vspace{-1em}
+\begin{itemize}
+    \item 2 green onions, chopped
+    \item 1 tsp toasted sesame seeds
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+\vspace{0.5em}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Marinade]
+\vspace{-1em}
+\begin{itemize}
+    \item $1/4$ cup brown sugar
+    \item $2$ cloves garlic, minced or crushed
+    \item $2~\frac{1}{2}$ tbsp soy sauce
+    \item $1/2$ tbsp oyster sauce
+    \item $1/4$ tsp ground ginger
+    \item $1$ tbsp vegetable oil
+    \item freshly cracked pepper
+\end{itemize}
+\vspace{1em}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Glaze]
+\begin{itemize}
+    \item 1/4 cup brown sugar
+    \item 2 cloves garlic, minced or crushed
+    \item $1 \frac{1}{2}$ tbsp oyster sauce
+    \item $1 \frac{1}{2}$ tbsp hoisin sauce
+    \item $1/4$ tsp ground ginger
+    \item $1$ tbsp vegetable oil
+    \item freshly cracked pepper
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+\end{minipage}
+\vspace{1em}
+
+\instructions
+Procure a shallow dish or sealable plastic gallon bag to marinade the chicken in as well as a large nonstick skillet.
+\begin{enumerate}
+    \item Start by preparing the marinade. Finely mince or crush the garlic. In a small bowl combine this with the rest of the marinade ingredients. Season generously with freshly cracked pepper. Taste for seasoning and adjust as desired.
+    \item Place the chicken thighs in a shallow dish or plastic gallon bag, then pour the marinade to coat. Turn over the chicken or the container to evenly coat each piece. If possible, lightly pound the chicken to help the marinade soak in.
+    \item Let marinade in refrigerator for at least $30$ minutes. For best results, marinade overnight. Do not marinade for longer than $24$ hours.
+    \item Once marinaded, remove the chicken from the marinade and discard leftover marinade.
+    \item In a small bowl, combine all the ingredients for the glaze. Finely mincing or crushing the garlic, generously seasoning with pepper, and tasting for seasoning as before with the marinade.
+    \item Heat a large nonstick skillet over medium high heat. Coat the skillet with $1/2$ tbsp vegetable oil.
+    \item Cook chicken in batches to avoid overcrowding. Ensure chicken is browned evenly on both sides and internal temperature reads \temp{165}.
+    \item Once the chicken is finished cooking, add the glaze to the skillet still on medium high heat. Allow to come to a boil and whisk constantly to incorporate any bits of browned chicken still in the skillet. Continue boiling and whisking until it reduces to a thick and sticky glaze.
+    \item Add the cooked chicken to a bowl with sealing lid, pour the glaze over the chicken, then seal and shake vigorously to thoroughly coat the chicken with the glaze.
+    \item Garnish with toasted sesame seeds and chopped green onions as desired.
+\end{enumerate}
+\newpage
+\begin{minipage}{\textwidth}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\section*{\underline{Garlic Noodles}}
+\ingredients
+\vspace{-1em}
+\begin{itemize}
+    \item $16$ oz angel hair pasta
+    \item $8$ cloves garlic, minced
+    \item $1$ bunch green onions
+    \item $8$ tbsp salted butter
+    \item $4$ tbsp oyster sauce
+    \item $4$ tbsp brown sugar
+    \item $4$ tsp lite soy sauce
+    \item $2$ tsp sesame oil
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\section*{\underline{Broccoli}}
+\ingredients
+\vspace{-1em}
+\begin{itemize}
+    \item broccoli
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+\end{minipage}
+
+\end{document}
