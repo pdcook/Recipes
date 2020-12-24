@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \prepcooktime{5 minutes}{1 minute 30 seconds}
+    \breakfast
+    \serves{1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Mug Pancake}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\begin{itemize}
+    \item $26$ grams salted butter
+    \item $20$ grams white granulated sugar
+    \item $60$ grams milk
+    \item $50$ grams all purpose flour
+    \item $1/2$ tsp baking powder
+    \item $1/4$ tsp vanilla extract (optional)
+\end{itemize}
+
+\instructions
+Procure a $12$ fl.\ oz., microwave safe coffee mug and a sufficiently precise digital scale. For best results, the measurements in this recipe must be followed very precisely.
+\begin{enumerate}
+    \item Add the butter to the mug and microwave until completely melted---about 40 seconds in a $1000$ W microwave.
+    \item Add all other ingredients to the mug and mix until just combined. Do not over mix.
+    \item Separate batter from the mug by scraping the bottom and sides with a rubber spatula.
+    \item Tap mug on counter once or twice to settle the batter.
+    \item Microwave uncovered for 1 minute to 1 minute 30 seconds. Do not overcook.
+    \item Let cool and then serve hot, optionally with honey, maple syrup, or butter on top.
+\end{enumerate}
+
+\spewfootnotes
+
+\end{document}
