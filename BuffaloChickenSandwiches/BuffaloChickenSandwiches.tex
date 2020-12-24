@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \noredmeat
+    \prepcooktime{30 minutes}{7 to 9 hours}
+    \lunch
+    \serves{6}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Buffalo Chicken Sandwiches}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\begin{minipage}{\textwidth}
+\begin{multicols*}{2}
+\ingredients[Buffalo Chicken]
+\begin{itemize}
+    \item $1$ bottle mild or spicy buffalo wing sauce (such as \foothref{https://www.franksredhot.com/en-us/products/franks-redhot-buffalo-wings-sauce}{Frank's})
+    \item $3$ to $4$ lbs boneless, skinless chicken breast
+    \item $1$ small white onion, diced or chopped
+    \item $1$ to $2$ green bell peppers, diced or chopped
+    \item $2$ to $4$ cloves garlic, finely minced or crushed
+    \item $1$ package dry ranch salad dressing mix
+    \item $2$ tbsp salted butter
+\end{itemize}
+\columnbreak
+\ingredients[Sandwich]
+\begin{itemize}
+    \item Hoagie Rolls, split lengthwise
+    \item Sliced Swiss, sliced provolone, or freshly grated Parmesan
+    \item Any additional desired sandwich toppings
+\end{itemize}
+\end{multicols*}
+\end{minipage}
+\vspace{1em}
+
+\instructions
+Procure a crock pot with at least $1$ gallon capacity.
+\begin{enumerate}
+    \item Chop or dice the onion and green bell peppers to desired size and finely mince or crush the garlic.
+    \item Combine all the ingredients for the buffalo chicken in the crock pot---except for the butter.
+    \item Cook on low for $7$ to $9$ hours, until internal temperature of the chicken reaches \temp{165}.
+    \item Once cooked, shred the chicken. This can be done either with two forks or a large spaghetti spoon.
+    \item Add the butter to the shredded chicken and mix gently until completely melted.
+    \item To serve, toast hoagie rolls. Optionally, melt cheese and pepper onto rolls while toasting. Pile buffalo chicken on rolls and add any additional toppings.
+    \item If desired, keep buffalo chicken sealed in fridge for up to a week. Reheat covered in microwave, prepare sandwich as before.
+\end{enumerate}
+
+\spewfootnotes
+
+\end{document}
