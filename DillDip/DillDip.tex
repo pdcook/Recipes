@@ -10,6 +10,30 @@
 \cfoot{\thepage\ of \pageref{LastPage}}
 \setlength\parindent{0pt}
 
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
 %%%%%%% Commands for recipes %%%%%%%
 
 % preceed recipe with \recipe{NAME} command
@@ -93,23 +117,20 @@
 
 % begin writing the recipe
 \ingredients
-\begin{multicols}{2}
 \begin{itemize}
-    \item 2/3 cup Mayonnaise
-    \item 2/3 cup Sour Cream
-    \item 2 tsp Dried Dill Weed
-    \item 1 tsp Dried Parsley Flakes
-    \item 1 tsp Dried Onion Flakes
-    \item 1 tsp Beau Monde
-    \item 1 loaf Jewish Rye Bread or Seedless Rye
+    \item 2/3 cup mayonnaise
+    \item 2/3 cup sour cream
+    \item 2 tsp dried dill weed
+    \item 1 tsp dried parsley flakes
+    \item 1 tsp dried onion flakes
+    \item 1 tsp beau monde\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[2]{If necessary, $1$ tsp beau monde can be substituted by grinding together $\frac{1}{2}$ tsp seasoned salt, $\frac{1}{4}$ tsp salt, $\frac{1}{8}$ tsp onion powder, $\frac{1}{8}$ tsp garlic powder, and $\frac{1}{8}$ tsp celery seed.}
+    \item 1 loaf Jewish rye bread or seedless rye
 \end{itemize}
-\columnbreak
-\end{multicols}
 \instructions
 Procure a medium-large bowl with a lid, make space in refrigerator.
 \begin{enumerate}
     \item Using a spoon, mix all ingredients (except bread) in the bowl.
-    \item Chill for several hours.
+    \item Chill for several hours, preferably overnight.
     \item Serve with bread to dip.
 \end{enumerate}
 
