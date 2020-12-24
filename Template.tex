@@ -10,6 +10,32 @@
 \cfoot{\thepage\ of \pageref{LastPage}}
 \setlength\parindent{0pt}
 
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
 %%%%%%% Commands for recipes %%%%%%%
 
 % preceed recipe with \recipe{NAME} command
@@ -103,8 +129,11 @@ Preheat computer to \temp{120}. Clone this repository or download the template f
 \begin{enumerate}
     \item Read through this template and figure out which of the few commands you will need.
     \item Edit template to taste.
+    \item Use template to write down recipes. If in need of inspiration, I suggest \foothref{https://github.com/pdcook/Recipes/}{some of the recipes here.}
     \item Put in \LaTeX compiler of your choice, I use \texttt{pdflatex}. Compile until light golden brown.
     \item Serve immediately.
 \end{enumerate}
+
+\spewfootnotes
 
 \end{document}
