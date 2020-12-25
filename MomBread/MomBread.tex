@@ -1,0 +1,194 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+%\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+\usepackage[left=0.5in, right=0.5in, top=1in, bottom=1in]{geometry}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \prepcooktime{1 hour 30 minutes}{40 minutes}
+    \snack
+    \serves{Many}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Mom Bread}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Jessica Ullom-Minnich and Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+\renewcommand{\thefootnote}{\alph{footnote}}
+
+\begin{minipage}{\textwidth}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Dry]
+\vspace{-1em}
+\begin{itemize}
+    \item $2-4$ cups all purpose flour
+    \item $2$ cups whole wheat flour\footnotemark[1]
+    \item $1$ cup plain rolled oats
+    \item $1$ cup rye flour\footnotemark[2]
+    \item $1$ cup dry milk powder
+    \item $1/4$ cup wheat gluten
+    \item $1/4$ cup wheat germ\footnotemark[3]
+    \item $1/4$ cup wheat bran\footnotemark[3]
+    \item $1/4$ cup oat bran\footnotemark[3]
+    \item $1/2$ tbsp active dry yeast
+    \item $1$ tbsp salt
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Wet]
+\vspace{-1em}
+\begin{itemize}
+    \item $2~\frac{1}{4}$ cups water
+    \item $1/4$ cup honey\footnotemark[4]
+    \item $1/4$ cup salted butter
+    \item $1/2$ tbsp active dry yeast
+\end{itemize}
+\ingredients[Miscellaneous]
+\vspace{-1em}
+\begin{itemize}
+    \item 1 tbsp salted butter
+    \item nonstick cooking spray
+    \item a pinch coarse salt (optional)
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+\end{minipage}
+\setcounter{footnote}{0}
+\vspace{1em}
+
+\instructions
+Procure a stand mixer, $8~\mathrm{in.}\times4~\mathrm{in.}$ bread pan, and a wire cooling rack. Make space on a clean surface to knead dough.
+\begin{enumerate}
+    \item From the wet ingredients, combine the water, honey, and butter---\textbf{not} the yeast---in a microwave safe bowl.
+    \item Microwave the mixture uncovered for $2$ minutes on high.\footnotemark[5]
+    \item Add the $1/2$ tbsp of yeast to the warmed mixture.
+    \item In a stand mixer set to the slowest setting, combine all of the dry ingredients except for the all purpose flour.
+    \item Once the dry ingredients are thoroughly mixed, add the wet mixture and keep the stand mixer running.
+    \item To the running stand mixer, add $1/4$ cup of all purpose flour at a time until the dough separates from the sides of the bowl and forms a large, slightly sticky ball.
+    \item Pour the dough onto a well floured (with all purpose flour) kneading surface and set aside stand mixer---do not rinse or clean yet. Flour hands and knead until dough bounces when depressed. Add more all purpose flour as necessary to keep it from sticking.
+    \item Spray the bowl of the stand mixer with nonstick cooking spray. Place dough inside and cover with kitchen towel. Let rise at room temperature until doubled in size, about $30$ minutes.
+    \item Once risen, remove dough to well floured surface and divide into two equal balls.
+    \item Using a rolling pin, separately roll each ball into a $1/2~\mathrm{in.}$ thick rectangle with the long side roughly twice as long as the short side.
+    \item Starting from one of the short ends of the rectangle, tightly roll the dough into a cylinder. Pinch closed the seam at the opposite short end of the rectangle, as well as the ends of the cylinder. Repeat this and previous step for second dough ball.\footnotemark[6]
+    \item Spray bread pan with nonstick cooking spray. Place dough in prepared bread pan.
+    \item Cover with kitchen towel and allow to rise at room temperature for $30$ minutes or until doubled in size.
+    \item Once risen, bake in oven at \temp{350} for about $40$ minutes or until evenly browned. When done, the loaf should sound hollow when tapped and a thermometer inserted reads \temp{200}.
+    \item Immediately remove the loaf from the bread pan and place onto a wire cooling rack. Immediately spread butter over top and coarse salt if desired.
+    \item Let cool completely before slicing. Store in airtight container at room temperature.
+\end{enumerate}
+\renewcommand{\thefootnote}{\alph{footnote}}
+\footnotetext[1]{If necessary, can be substituted for all purpose flour.}
+\footnotetext[2]{If necessary, can be substituted for whole wheat flour (preferred) or all purpose flour.}
+\footnotetext[3]{If necessary, wheat germ, wheat bran, and oat bran can be substituted for one another.}
+\footnotetext[4]{Can be substituted with molasses or sugar.}
+\footnotetext[5]{Alternatively, heat on stove until butter is just melted (preferred) or just use hot water.}
+\footnotetext[6]{If desired, wrap prepared dough cylinder in plastic wrap and freeze for up to a couple months. To use, remove from freezer, unwrap, and allow to thaw covered at room temperature for $6$ hours or until doubled in size.}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+\spewfootnotes
+\end{document}
