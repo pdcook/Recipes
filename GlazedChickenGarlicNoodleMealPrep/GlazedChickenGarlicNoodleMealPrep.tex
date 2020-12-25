@@ -6,6 +6,9 @@
 \usepackage{lastpage}
 \usepackage[left=0.5in, right=0.5in, top=1in, bottom=1in]{geometry}
 
+\usepackage{vwcol} % for variable width columns
+\usepackage{lipsum}
+
 % some default formatting
 \pagestyle{fancy}
 \cfoot{\thepage\ of \pageref{LastPage}}
@@ -103,7 +106,7 @@
     \noredmeat
     \prepcooktime{Overnight + 1 hour}{1 hour}
     \lunch
-    \serves{6}
+    \serves{8}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,7 +122,7 @@
 % begin writing the recipe
 \section*{\underline{Chicken}}
 \ingredients
-
+\vspace{-1em}
 \begin{multicols*}{2}
 \begin{minipage}{\linewidth}
 \ingredients[Chicken]
@@ -163,8 +166,9 @@
 \begin{itemize}
     \item 1/4 cup brown sugar
     \item 2 cloves garlic, minced or crushed
-    \item $1 \frac{1}{2}$ tbsp oyster sauce
-    \item $1 \frac{1}{2}$ tbsp hoisin sauce
+    \item $1$ tbsp lite soy sauce
+    \item $1$ tbsp oyster sauce
+    \item $1$ tbsp hoisin sauce
     \item $1/4$ tsp ground ginger
     \item $1$ tbsp vegetable oil
     \item freshly cracked pepper
@@ -183,40 +187,91 @@ Procure a shallow dish or sealable plastic gallon bag to marinade the chicken in
     \item Once marinaded, remove the chicken from the marinade and discard leftover marinade.
     \item In a small bowl, combine all the ingredients for the glaze. Finely mincing or crushing the garlic, generously seasoning with pepper, and tasting for seasoning as before with the marinade.
     \item Heat a large nonstick skillet over medium high heat. Coat the skillet with $1/2$ tbsp vegetable oil.
-    \item Cook chicken in batches to avoid overcrowding. Ensure chicken is browned evenly on both sides and internal temperature reads \temp{165}.
-    \item Once the chicken is finished cooking, add the glaze to the skillet still on medium high heat. Allow to come to a boil and whisk constantly to incorporate any bits of browned chicken still in the skillet. Continue boiling and whisking until it reduces to a thick and sticky glaze.
+    \item Cook chicken in batches to avoid overcrowding. Set aside cooked chicken on a plate. Ensure chicken is browned evenly on both sides and internal temperature reads \temp{165}.
+    \item Once the chicken is finished cooking and removed from the pan, add the glaze to the skillet still on medium high heat. Allow to come to a boil and whisk constantly to incorporate any bits of browned chicken still in the skillet. Continue boiling and whisking until it reduces to a thick and sticky glaze.
     \item Add the cooked chicken to a bowl with sealing lid, pour the glaze over the chicken, then seal and shake vigorously to thoroughly coat the chicken with the glaze.
     \item Garnish with toasted sesame seeds and chopped green onions as desired.
 \end{enumerate}
 \newpage
 \begin{minipage}{\textwidth}
-\begin{multicols*}{2}
-\begin{minipage}{\linewidth}
+\setlength{\columnseprule}{0.5pt}
+\begin{vwcol}[widths={0.6,0.4}, rule=0pt]
+\begin{minipage}{0.58\linewidth}
 \section*{\underline{Garlic Noodles}}
 \ingredients
+
+\begin{minipage}{\textwidth}
+\setlength{\columnseprule}{0pt}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Pasta]
 \vspace{-1em}
 \begin{itemize}
     \item $16$ oz angel hair pasta
     \item $8$ cloves garlic, minced
-    \item $1$ bunch green onions
+    \item $1$ bunch green onions, chopped
     \item $8$ tbsp salted butter
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Sauce]
+\vspace{-1em}
+\begin{itemize}
     \item $4$ tbsp oyster sauce
     \item $4$ tbsp brown sugar
     \item $4$ tsp lite soy sauce
     \item $2$ tsp sesame oil
 \end{itemize}
 \end{minipage}
+\end{multicols*}
+\begin{minipage}{\textwidth}
+\ingredients[Garnish]
+\vspace{-1em}
+\begin{itemize}
+    \item $\sim1$ green onion, chopped
+    \item toasted sesame seeds
+\end{itemize}
+\end{minipage}
+\end{minipage}
+\end{minipage}
+\begin{minipage}{0.55\textwidth}
+\vspace{1em}
 
-\columnbreak
-\begin{minipage}{\linewidth}
+\instructions
+Procure a large nonstick skillet and a large pot.
+\begin{enumerate}
+    \item In a small bowl, mix together all the ingredients for the sauce until completely combined.
+    \item Fill a large pot with water, lightly salt the water, and boil over high heat. Cook the noodles according to the package directions, until al dente. Once cooked, drain and set aside.
+    \item Mince the garlic and chop the green onions. Set aside a handful of the chopped green onions for garnish.
+    \item In a large nonstick skillet over medium-low heat, melt the butter. Once the butter is completely melted and bubbly, add the garlic and green onions---except for the few that were set aside for garnish.
+    \item Sauté garlic and green onions until soft and fragrant.
+    \item Remove the skillet from heat and add the drained noodles and sauce mixture to the skillet. Stir and flip well to coat the pasta evenly.
+    \item Garnish with reserved green onions and toasted sesame seeds.
+\end{enumerate}
+\end{minipage}
+
+\newpage
+\begin{minipage}{0.3\linewidth}
 \section*{\underline{Broccoli}}
 \ingredients
 \vspace{-1em}
 \begin{itemize}
-    \item broccoli
+    \item 1 10oz bag frozen broccoli (or 1 crown fresh broccoli)
 \end{itemize}
+\vspace{1em}
+
+\instructions
+\vspace{-1em}
+\begin{enumerate}
+    \item Steam broccoli according to package directions. Alternatively, cut a fresh broccoli crown into florets and steam in a steamer to desired softness---no more than $7$ minutes.
+\end{enumerate}
+
+\section*{\underline{Meal Prep}}
+This dish will keep in a refrigerator for up to a week. To store, package individual servings in glass or plastic food storage containers. For containers with multiple compartments, best results are found when the noodles are kept separate from the chicken and broccoli---which can be kept together. Reheat loosely covered in microwave on high for about 2 minutes.
 \end{minipage}
-\end{multicols*}
+\end{vwcol}
 \end{minipage}
 
 \end{document}
