@@ -12,7 +12,7 @@ verbose=false
 output_file_path='Recipes.pdf'
 
 # path to parent directory which is home to all recipe pdfs
-recipes_parent_dir='./'
+recipes_parent_dir="$PWD"
 
 usage="$(basename "$0") [-h] [-adsov] -- combine all recipes
 
@@ -50,12 +50,12 @@ where:
     -v  verbose"
 
 
-while getopts 'abf:v' flag; do
+while getopts 'asd:o:vh' flag; do
   case "${flag}" in
     a) a_flag=true ;;
     s) s_flag=true ;;
-    d:) recipes_parent_dir="${OPTARG}" ;;
-    o:) output_file_path="${OPTARG}" ;;
+    d) recipes_parent_dir="${OPTARG}" ;;
+    o) output_file_path="${OPTARG}" ;;
     v) verbose=true ;;
     h) echo "$usage"
        exit 0 ;;
@@ -68,19 +68,22 @@ done
 cd "$recipes_parent_dir"
 
 # if -s, preform some setup
-if ["s_flag" = true]
+if [ "$s_flag" = true ]
 then
     tmp_dir="$recipes_parent_dir/.tmp"
     bookmarks_file="$tmp_dir/bookmarks.txt"
     bookmarks_fmt="BookmarkBegin
-    BookmarkTitle: %s
-    BookmarkLevel: 1
-    BookmarkPageNumber: 1
-    "
+BookmarkTitle: %s
+BookmarkLevel: 1
+BookmarkPageNumber: 1
+"
+
+    rm -rf "$tmp_dir"
+    mkdir -p "$tmp_dir"
 fi
 
 # if not -s, preform different setup
-if ["s_flag" = false]
+if [ "$s_flag" = false ]
 then
     # this is a silly way of doing this, but it works
     tex_start="\\RequirePackage{recipebook}
@@ -110,7 +113,7 @@ fi
 
 # loop through all subdirectories for recipes
 for recipe_dir in */; do
-    if ["$verbose" = true]
+    if [ "$verbose" = true ]
     then
         echo "$recipe_dir"
     fi
@@ -119,12 +122,17 @@ for recipe_dir in */; do
     cd "$recipe_dir"
 
     # if -a, then recompile all tex files in each recipe
-    if ["$a_flag" = true]
+    if [ "$a_flag" = true ]
     then
         for f in *.tex; do
 
-            pdflatex "$f"
-            pdflatex "$f"
+                if [ "$verbose" = true ]
+                then
+                    echo "    Compiling $f..."
+                fi
+
+                pdflatex "$f" > /dev/null 2>&1
+                pdflatex "$f" > /dev/null 2>&1
 
         done
     fi
@@ -136,25 +144,25 @@ for recipe_dir in */; do
                     sed -e 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/g' \
                         -e 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/g')
 
-        if ["$verbose" = true]
+        if [ "$verbose" = true ]
         then
-            echo "    $f"
+            echo "    $spaced_name"
         fi
 
         # if -s, then just merge the pdfs and be done
-        if ["$s_flag" = true]
+        if [ "$s_flag" = true ]
         then
 
             # make bookmarks for pdfs and prepare them for merge
-            if ["$verbose" = true]
+            if [ "$verbose" = true ]
             then
-                echo "        Bookmarking $f..."
+                echo "        Bookmarking $spaced_name..."
             fi
 
             printf "$bookmarks_fmt" "$spaced_name" > "$bookmarks_file"
             pdftk "$f" update_info "$bookmarks_file" output "$tmp_dir/$f"
 
-            if ["$verbose" = true]
+            if [ "$verbose" = true ]
             then
                 echo "        Done."
             fi
@@ -163,11 +171,19 @@ for recipe_dir in */; do
         fi
 
         # if not -s, then create the basic recipe book (in a very dumb way)
-        if ["s_flag" = false]
+        if [ "$s_flag" = false ]
         then
+            if [ "$verbose" = true ]
+            then
+                echo "        Writing TeX entry..."
+            fi
             tex_contents="$tex_contents
 \includepdf[linktodoc=true,pages=-,addtotoc={1,section,1, $spaced_name, \
 sec:$title}]{$recipe_dir/$f}"
+            if [ "$verbose" = true ]
+            then
+                echo "        Done."
+            fi
         fi
 
     done
@@ -177,38 +193,45 @@ sec:$title}]{$recipe_dir/$f}"
 done
 
 # if -s output the merged pdf and exit 0
-if ["$s_flag" = true]
+if [ "$s_flag" = true ]
 then
-    if ["$verbose" = true]
+    if [ "$verbose" = true ]
     then
         echo "Writing $output_file_path"
     fi
+
     pdftk "$tmp_dir"/*.pdf cat output "$output_file_path"
+
+    if [ "$verbose" = true ]
+    then
+        echo "Done."
+    fi
+
+    rm -rf "$tmp_dir"
 
     exit 0
 fi
 
 # if not -s compile the recipe book
-if ["$s_flag" = true]
+if [ "$s_flag" = false ]
 then
-    if ["$verbose" = true]
+    if [ "$verbose" = true ]
     then
         echo "Writing $output_file_path"
     fi
 
-    tex_contents = "$tex_contents
+    tex_contents="$tex_contents
 $tex_end"
 
-    if ["$verbose" = true]
-    then
-    echo "$tex_contents" | pdflatex -jobname=$output_file_path
-    echo "$tex_contents" | pdflatex -jobname=$output_file_path
-    fi
 
-    if ["$verbose" = false]
+    echo "$tex_contents" > "${output_file_path%.*}.tex"
+
+    pdflatex "${output_file_path%.*}.tex"
+    pdflatex "${output_file_path%.*}.tex"
+
+    if [ "$verbose" = true ]
     then
-        echo "$tex_contents" | pdflatex -jobname=$output_file_path > /dev/null 2>&1
-        echo "$tex_contents" | pdflatex -jobname=$output_file_path > /dev/null 2>&1
+        echo "Done."
     fi
 
     exit 0
