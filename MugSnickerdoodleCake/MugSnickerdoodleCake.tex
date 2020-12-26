@@ -1,0 +1,160 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[bottom]{footmisc}
+\usepackage{lastpage}
+
+% some default formatting
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength\parindent{0pt}
+
+% some custom commands for hyperlinks
+\usepackage{tablefootnote}
+\usepackage{dblfnote}
+\hypersetup{%
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    runcolor=blue,
+    allcolors=blue}
+\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
+
+\makeatletter
+\newcommand{\spewfootnotes}{%
+\tfn@tablefootnoteprintout%
+\global\let\tfn@tablefootnoteprintout\relax%
+\gdef\tfn@fnt{0}%
+}
+\makeatother
+
+\makeatletter
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width \textwidth
+  \kern2.6\p@}
+\makeatother
+
+%%%%%%% Commands for recipes %%%%%%%
+
+% preceed recipe with \recipe{NAME} command
+\newcommand{\recipe}[1]{%
+    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
+
+% display how many servings it makes with \serves{NUMBER}
+\newcommand{\serves}[1]{%
+    \chead{Serves #1}}
+
+% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
+\newcommand{\vegetarian}{%
+    \rhead{Vegetarian}}
+\newcommand{\vegan}{%
+    \rhead{Vegan}}
+\newcommand{\pescetarian}{%
+    \rhead{Pescetarian}}
+\newcommand{\noredmeat}{%
+    \rhead{No Red Meat}}
+
+% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
+\newcommand{\breakfast}{%
+    \lhead{Breakfast}}
+\newcommand{\lunch}{%
+    \lhead{Lunch}}
+\newcommand{\dinner}{%
+    \lhead{Dinner}}
+\newcommand{\snack}{%
+    \lhead{Snack}}
+\newcommand{\Dessert}{%
+    \lhead{Dessert}}
+
+% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
+% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
+\newcommand{\preptime}[1]{%
+    \lfoot{Prep time: #1}}
+\newcommand{\cooktime}[1]{%
+    \lfoot{Cook time: #1}}
+\newcommand{\prepcooktime}[2]{%
+    \lfoot{Prep time: #1\\Cook time: #2}}
+
+% start ingredients list with \ingredients or \ingredients[HEADER]
+\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
+    \emph{#1}\\}
+% start instructions list with \instructions or \instructions[HEADER]
+\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
+    \emph{#1}\\}
+
+% temperature in farenheit with \temp{TEMPERATURE}
+\newcommand{\temp}[1]{%
+    $#1^\circ$F}
+
+% sign recipe with \sign{NAME}{URL}
+\newcommand{\sign}[2]{%
+    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \prepcooktime{5 minutes}{1 minute 30 seconds}
+    \Dessert
+    \serves{1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% start the recipe with the \recipe command
+\recipe{Mug Snickerdoodle Cake}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+
+\begin{minipage}{\textwidth}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Cake]
+\vspace{-1em}
+\begin{itemize}
+    \item 1/4 cup + 2 tbsp all purpose flour
+    \item 1/4 cup milk
+    \item 2 tbsp granulated sugar
+    \item 2 tbsp salted butter, melted
+    \item 1/2 tsp vanilla extract
+    \item 1/4 tsp baking powder
+    \item 1/4 tsp ground cinnamon
+\end{itemize}
+\end{minipage}
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\ingredients[Cinnamon Sugar]
+\vspace{-1em}
+\begin{itemize}
+    \item 1 tbsp granulated sugar
+    \item 1/4 tsp ground cinnamon
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+
+\instructions
+Procure two small bowls and a microwave-safe mug with a capacity of at least 12 fl.\ oz. For best results, use a cylindrical mug with straight, vertical walls.
+\begin{enumerate}
+    \item In a small bowl, whisk together the dry ingredients for the cake until homogeneous.
+    \item Whisk in the wet ingredients until batter is smooth.
+    \item In a separate bowl, thoroughly whisk together the ingredients for the cinnamon sugar.
+    \item Scoop a large spoonful of the batter into the mug, then sprinkle a spoonful of the cinnamon sugar. Repeat layering until all of the batter has been transferred to the mug. Top with the remaining cinnamon sugar.
+    \item Microwave uncovered on high for 1 minute to 1 minute 30 seconds. Allow to cool before serving.
+\end{enumerate}
+\end{minipage}
+
+\spewfootnotes
+
+\end{document}
