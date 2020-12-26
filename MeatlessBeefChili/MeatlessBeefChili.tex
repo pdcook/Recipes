@@ -1,97 +1,5 @@
 \documentclass{article}
-\usepackage{fancyhdr}
-\usepackage{multicol}
-\usepackage[hidelinks]{hyperref}
-\usepackage[bottom]{footmisc}
-\usepackage{lastpage}
-
-% some default formatting
-\pagestyle{fancy}
-\cfoot{\thepage\ of \pageref{LastPage}}
-\setlength\parindent{0pt}
-
-% some custom commands for hyperlinks
-\usepackage{tablefootnote}
-\usepackage{dblfnote}
-\hypersetup{%
-    colorlinks=true,
-    urlcolor=blue,
-    linkcolor=blue,
-    runcolor=blue,
-    allcolors=blue}
-\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
-
-\makeatletter
-\newcommand{\spewfootnotes}{%
-\tfn@tablefootnoteprintout%
-\global\let\tfn@tablefootnoteprintout\relax%
-\gdef\tfn@fnt{0}%
-}
-\makeatother
-
-\makeatletter
-\renewcommand\footnoterule{%
-  \kern-3\p@
-  \hrule\@width \textwidth
-  \kern2.6\p@}
-\makeatother
-
-%%%%%%% Commands for recipes %%%%%%%
-
-% preceed recipe with \recipe{NAME} command
-\newcommand{\recipe}[1]{%
-    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
-
-% display how many servings it makes with \serves{NUMBER}
-\newcommand{\serves}[1]{%
-    \chead{Serves #1}}
-
-% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
-\newcommand{\vegetarian}{%
-    \rhead{Vegetarian}}
-\newcommand{\vegan}{%
-    \rhead{Vegan}}
-\newcommand{\pescetarian}{%
-    \rhead{Pescetarian}}
-\newcommand{\noredmeat}{%
-    \rhead{No Red Meat}}
-
-% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
-\newcommand{\breakfast}{%
-    \lhead{Breakfast}}
-\newcommand{\lunch}{%
-    \lhead{Lunch}}
-\newcommand{\dinner}{%
-    \lhead{Dinner}}
-\newcommand{\snack}{%
-    \lhead{Snack}}
-\newcommand{\Dessert}{%
-    \lhead{Dessert}}
-
-% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
-% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
-\newcommand{\preptime}[1]{%
-    \lfoot{Prep time: #1}}
-\newcommand{\cooktime}[1]{%
-    \lfoot{Cook time: #1}}
-\newcommand{\prepcooktime}[2]{%
-    \lfoot{Prep time: #1\\Cook time: #2}}
-
-% start ingredients list with \ingredients or \ingredients[HEADER]
-\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
-    \emph{#1}\\}
-% start instructions list with \instructions or \instructions[HEADER]
-\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
-    \emph{#1}\\}
-
-% temperature in farenheit with \temp{TEMPERATURE}
-\newcommand{\temp}[1]{%
-    $#1^\circ$F}
-
-% sign recipe with \sign{NAME}{URL}
-\newcommand{\sign}[2]{%
-    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
-
+\usepackage{../recipe}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Recipe Formatting %%%%%%%
@@ -121,13 +29,13 @@
 \ingredients
 \begin{itemize}
     \renewcommand{\thefootnote}{\arabic{footnote}}
-    \item $\sim 2$~lbs \foothref{https://www.quorn.us/products/quorn-meatless-grounds}{Quorn Meatless Grounds}\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[2]{\hbox{Optionally, use regular beef grounds if desired.}}
+    \item $\sim 2$~lbs \foothref{https://www.quorn.us/products/quorn-meatless-grounds}{Quorn Meatless Grounds}\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[2]{Optionally, use regular beef grounds if desired.}
     \item 2 $15$~oz cans of dark red kidney beans, drained
     \item 2 $15$~oz cans of tomato sauce
     \item 1 $28$~oz can of crushed tomatoes
     \item 1 small white onion, diced
     \renewcommand{\thefootnote}{\arabic{footnote}}
-    \item 1 box \foothref{https://carrollshelbyschili.com/products}{Carroll Shelby's Chili Kit}\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[3]{\hbox{If this exact box cannot be obtained, the contents are:} \hbox{$32$ grams masa flour, $1.5$ grams cayenne pepper, and $72$ grams of ``chili spices''.} \hbox{One can approximate Carroll Shelby's ``chili spices'' with regular chili powder} \hbox{and a pinch of paprika. Taste for seasoning when using this method.}}
+    \item 1 box \foothref{https://carrollshelbyschili.com/products}{Carroll Shelby's Chili Kit}\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[3]{If this exact box cannot be obtained, the contents are: $32$ grams masa flour, $1.5$ grams cayenne pepper, and $72$ grams of ``chili spices''. One can approximate Carroll Shelby's ``chili spices'' with regular chili powder and a pinch of paprika. Taste for seasoning when using this method.}
 
     \item 2 bags oyster crackers (optional)
 \end{itemize}

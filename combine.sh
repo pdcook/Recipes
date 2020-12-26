@@ -1,7 +1,7 @@
 #!/bin/bash
-
+script_dir=$(pwd)
 out_file="combined.pdf"
-tmp_dir="/tmp/pdftk_unite"
+tmp_dir="$script_dir/.tmp"
 bookmarks_file="$tmp_dir/bookmarks.txt"
 bookmarks_fmt="BookmarkBegin
 BookmarkTitle: %s
@@ -23,7 +23,7 @@ for d in */; do
         printf "$bookmarks_fmt" "$spaced_name" > "$bookmarks_file"
         pdftk "$f" update_info "$bookmarks_file" output "$tmp_dir/$f"
     done
-    cd ../
+    cd "$script_dir"
 done
 
 pdftk "$tmp_dir"/*.pdf cat output "$out_file"

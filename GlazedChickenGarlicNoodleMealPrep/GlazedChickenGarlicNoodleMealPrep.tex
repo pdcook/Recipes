@@ -1,101 +1,8 @@
 \documentclass{article}
-\usepackage{fancyhdr}
-\usepackage{multicol}
-\usepackage[hidelinks]{hyperref}
-\usepackage[bottom]{footmisc}
-\usepackage{lastpage}
-\usepackage[left=0.5in, right=0.5in, top=1in, bottom=1in]{geometry}
+\usepackage{../recipe}
 
-\usepackage{vwcol} % for variable width columns
-\usepackage{lipsum}
 
-% some default formatting
-\pagestyle{fancy}
-\cfoot{\thepage\ of \pageref{LastPage}}
-\setlength\parindent{0pt}
-
-% some custom commands for hyperlinks
-\usepackage{tablefootnote}
-\usepackage{dblfnote}
-\hypersetup{%
-    colorlinks=true,
-    urlcolor=blue,
-    linkcolor=blue,
-    runcolor=blue,
-    allcolors=blue}
-\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
-
-\makeatletter
-\newcommand{\spewfootnotes}{%
-\tfn@tablefootnoteprintout%
-\global\let\tfn@tablefootnoteprintout\relax%
-\gdef\tfn@fnt{0}%
-}
-\makeatother
-
-\makeatletter
-\renewcommand\footnoterule{%
-  \kern-3\p@
-  \hrule\@width \textwidth
-  \kern2.6\p@}
-\makeatother
-
-%%%%%%% Commands for recipes %%%%%%%
-
-% preceed recipe with \recipe{NAME} command
-\newcommand{\recipe}[1]{%
-    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
-
-% display how many servings it makes with \serves{NUMBER}
-\newcommand{\serves}[1]{%
-    \chead{Serves #1}}
-
-% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
-\newcommand{\vegetarian}{%
-    \rhead{Vegetarian}}
-\newcommand{\vegan}{%
-    \rhead{Vegan}}
-\newcommand{\pescetarian}{%
-    \rhead{Pescetarian}}
-\newcommand{\noredmeat}{%
-    \rhead{No Red Meat}}
-
-% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
-\newcommand{\breakfast}{%
-    \lhead{Breakfast}}
-\newcommand{\lunch}{%
-    \lhead{Lunch}}
-\newcommand{\dinner}{%
-    \lhead{Dinner}}
-\newcommand{\snack}{%
-    \lhead{Snack}}
-\newcommand{\Dessert}{%
-    \lhead{Dessert}}
-
-% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
-% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
-\newcommand{\preptime}[1]{%
-    \lfoot{Prep time: #1}}
-\newcommand{\cooktime}[1]{%
-    \lfoot{Cook time: #1}}
-\newcommand{\prepcooktime}[2]{%
-    \lfoot{Prep time: #1\\Cook time: #2}}
-
-% start ingredients list with \ingredients or \ingredients[HEADER]
-\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
-    \emph{#1}\\}
-% start instructions list with \instructions or \instructions[HEADER]
-\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
-    \emph{#1}\\}
-
-% temperature in farenheit with \temp{TEMPERATURE}
-\newcommand{\temp}[1]{%
-    $#1^\circ$F}
-
-% sign recipe with \sign{NAME}{URL}
-\newcommand{\sign}[2]{%
-    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
-
+\begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Recipe Formatting %%%%%%%
@@ -110,10 +17,9 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{document}
 \begin{minipage}{\textwidth}
 % start the recipe with the \recipe command
+\vspace{-1em}
 \recipe{Glazed Chicken and Garlic Noodle Meal Prep}
 % set the formatting for the first page only
 \thispagestyle{firstpage}
@@ -143,7 +49,7 @@
 \end{itemize}
 \end{minipage}
 \end{multicols*}
-\vspace{0.5em}
+\vspace{-1em}
 \begin{multicols*}{2}
 \begin{minipage}{\linewidth}
 \ingredients[Marinade]
@@ -163,6 +69,7 @@
 \columnbreak
 \begin{minipage}{\linewidth}
 \ingredients[Glaze]
+\vspace{-1em}
 \begin{itemize}
     \item 1/4 cup brown sugar
     \item 2 cloves garlic, minced or crushed
@@ -186,9 +93,9 @@ Procure a shallow dish or sealable plastic gallon bag to marinade the chicken in
     \item Let marinade in refrigerator for at least $30$ minutes. For best results, marinade overnight. Do not marinade for longer than $24$ hours.
     \item Once marinaded, remove the chicken from the marinade and discard leftover marinade.
     \item In a small bowl, combine all the ingredients for the glaze. Finely mincing or crushing the garlic, generously seasoning with pepper, and tasting for seasoning as before with the marinade.
-    \item Heat a large nonstick skillet over medium high heat. Coat the skillet with $1/2$ tbsp vegetable oil.
+    \item Heat a large nonstick skillet over medium-high heat. Coat the skillet with $1/2$ tbsp vegetable oil.
     \item Cook chicken in batches to avoid overcrowding. Set aside cooked chicken on a plate. Ensure chicken is browned evenly on both sides and internal temperature reads \temp{165}.
-    \item Once the chicken is finished cooking and removed from the pan, add the glaze to the skillet still on medium high heat. Allow to come to a boil and whisk constantly to incorporate any bits of browned chicken still in the skillet. Continue boiling and whisking until it reduces to a thick and sticky glaze.
+    \item Once the chicken is finished cooking and removed from the pan, add the glaze to the skillet still on medium-high heat. Allow to come to a boil and whisk constantly to incorporate any bits of browned chicken still in the skillet. Continue boiling and whisking until it reduces to a thick and sticky glaze.
     \item Add the cooked chicken to a bowl with sealing lid, pour the glaze over the chicken, then seal and shake vigorously to thoroughly coat the chicken with the glaze.
     \item Garnish with toasted sesame seeds and chopped green onions as desired.
 \end{enumerate}
@@ -199,12 +106,13 @@ Procure a shallow dish or sealable plastic gallon bag to marinade the chicken in
 \begin{minipage}{0.58\linewidth}
 \section*{\underline{Garlic Noodles}}
 \ingredients
+\vspace{1em}
 
 \begin{minipage}{\textwidth}
 \setlength{\columnseprule}{0pt}
 \begin{multicols*}{2}
 \begin{minipage}{\linewidth}
-\ingredients[Pasta]
+\ingredients[Noodles]
 \vspace{-1em}
 \begin{itemize}
     \item $16$ oz angel hair pasta

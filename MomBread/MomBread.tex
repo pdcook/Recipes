@@ -1,97 +1,5 @@
 \documentclass{article}
-\usepackage{fancyhdr}
-\usepackage{multicol}
-\usepackage[hidelinks]{hyperref}
-%\usepackage[bottom]{footmisc}
-\usepackage{lastpage}
-\usepackage[left=0.5in, right=0.5in, top=1in, bottom=1in]{geometry}
-
-% some default formatting
-\pagestyle{fancy}
-\cfoot{\thepage\ of \pageref{LastPage}}
-\setlength\parindent{0pt}
-
-% some custom commands for hyperlinks
-\usepackage{tablefootnote}
-\hypersetup{%
-    colorlinks=true,
-    urlcolor=blue,
-    linkcolor=blue,
-    runcolor=blue,
-    allcolors=blue}
-\newcommand{\foothref}[2]{\href{#1}{#2}\tablefootnote{\mbox{\url{#1}}}}
-
-\makeatletter
-\newcommand{\spewfootnotes}{%
-\tfn@tablefootnoteprintout%
-\global\let\tfn@tablefootnoteprintout\relax%
-\gdef\tfn@fnt{0}%
-}
-\makeatother
-
-\makeatletter
-\renewcommand\footnoterule{%
-  \kern-3\p@
-  \hrule\@width \textwidth
-  \kern2.6\p@}
-\makeatother
-
-%%%%%%% Commands for recipes %%%%%%%
-
-% preceed recipe with \recipe{NAME} command
-\newcommand{\recipe}[1]{%
-    \newpage\lhead{}\chead{#1}\rhead{}\lfoot{}\rfoot{}\section*{#1}}
-
-% display how many servings it makes with \serves{NUMBER}
-\newcommand{\serves}[1]{%
-    \chead{Serves #1}}
-
-% options for different diets: \vegetarian, \vegan, \pescetarian, \noredmeat
-\newcommand{\vegetarian}{%
-    \rhead{Vegetarian}}
-\newcommand{\vegan}{%
-    \rhead{Vegan}}
-\newcommand{\pescetarian}{%
-    \rhead{Pescetarian}}
-\newcommand{\noredmeat}{%
-    \rhead{No Red Meat}}
-
-% options for recipe type: \breakfast, \lunch, \dinner, \snack, \dessert
-\newcommand{\breakfast}{%
-    \lhead{Breakfast}}
-\newcommand{\lunch}{%
-    \lhead{Lunch}}
-\newcommand{\dinner}{%
-    \lhead{Dinner}}
-\newcommand{\snack}{%
-    \lhead{Snack}}
-\newcommand{\Dessert}{%
-    \lhead{Dessert}}
-
-% display only one of preptime or cooktime with \preptime{PREPTIME} or \cooktime{COOKTIME}
-% display both preptime and cooktime with \prepcooktime{PREPTIME}{COOKTIME}
-\newcommand{\preptime}[1]{%
-    \lfoot{Prep time: #1}}
-\newcommand{\cooktime}[1]{%
-    \lfoot{Cook time: #1}}
-\newcommand{\prepcooktime}[2]{%
-    \lfoot{Prep time: #1\\Cook time: #2}}
-
-% start ingredients list with \ingredients or \ingredients[HEADER]
-\newcommand{\ingredients}[1][\Large\emph{Ingredients}]{%
-    \emph{#1}\\}
-% start instructions list with \instructions or \instructions[HEADER]
-\newcommand{\instructions}[1][\Large\emph{Instructions}]{%
-    \emph{#1}\\}
-
-% temperature in farenheit with \temp{TEMPERATURE}
-\newcommand{\temp}[1]{%
-    $#1^\circ$F}
-
-% sign recipe with \sign{NAME}{URL}
-\newcommand{\sign}[2]{%
-    \rfoot{#1\\\emph{\href{#2}{#2}}\\}}
-
+\usepackage{../recipe}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Recipe Formatting %%%%%%%
@@ -182,12 +90,12 @@ Procure a stand mixer, $8~\mathrm{in.}\times4~\mathrm{in.}$ bread pan, and a wir
     \item Let cool completely before slicing. Store in airtight container at room temperature.
 \end{enumerate}
 \renewcommand{\thefootnote}{\alph{footnote}}
-\footnotetext[1]{If necessary, can be substituted for all purpose flour.}
-\footnotetext[2]{If necessary, can be substituted for whole wheat flour (preferred) or all purpose flour.}
-\footnotetext[3]{If necessary, wheat germ, wheat bran, and oat bran can be substituted for one another.}
-\footnotetext[4]{Can be substituted with molasses or sugar.}
-\footnotetext[5]{Alternatively, heat on stove until butter is just melted (preferred) or just use hot water.}
-\footnotetext[6]{If desired, wrap prepared dough cylinder in plastic wrap and freeze for up to a couple months. To use, remove from freezer, unwrap, and allow to thaw covered at room temperature for $6$ hours or until doubled in size.}
+%\footnotetext[1]{If necessary, can be substituted for all purpose flour.}
+%\footnotetext[2]{If necessary, can be substituted for whole wheat flour (preferred) or all purpose flour.}
+%\footnotetext[3]{If necessary, wheat germ, wheat bran, and oat bran can be substituted for one another.}
+%\footnotetext[4]{Can be substituted with molasses or sugar.}
+%\footnotetext[5]{Alternatively, heat on stove until butter is just melted (preferred) or just use hot water.}
+%\footnotetext[6]{If desired, wrap prepared dough cylinder in plastic wrap and freeze for up to a couple months. To use, remove from freezer, unwrap, and allow to thaw covered at room temperature for $6$ hours or until doubled in size.}
 \renewcommand{\thefootnote}{\arabic{footnote}}
 
 \spewfootnotes
