@@ -83,7 +83,7 @@ while getopts 'asmd:o:vhxqf' flag; do
     v) verbose=true ;;
     x) extra=true ;;
     h) echo "$usage"
-       exit 0 ;;
+       exit 2 ;;
     q) quiet=true
        verbose=false ;;
     f) force=true
@@ -154,6 +154,11 @@ then
 
 fi
 
+# keep track of number of recompiled files
+COMPILECOUNT=0
+# keep track of number of new pdf files
+PDFCOUNT=0
+
 
 # loop through all subdirectories for recipes
 for recipe_dir in */; do
@@ -168,9 +173,6 @@ for recipe_dir in */; do
     # if -a, then recompile all tex files in each recipe
     if [ "$a_flag" = true ]
     then
-
-        # keep track of number of recompiled files
-        FILECOUNT=0
 
         for f in *.tex; do
 
@@ -192,12 +194,12 @@ for recipe_dir in */; do
                     else
 
                         # increase the changed file counter
-                        FILECOUNT=$[FILECOUNT + 1]
+                        COMPILECOUNT=$[COMPILECOUNT + 1]
                     fi
                 else
 
                     # if force is set, then every file will be recompiled
-                    FILECOUNT=$[FILECOUNT + 1]
+                    COMPILECOUNT=$[COMPILECOUNT + 1]
 
                 fi
 
@@ -250,6 +252,31 @@ for recipe_dir in */; do
 
     # loop through all pdf files in recipe dir
     for f in *.pdf; do
+
+        if [ "$force" = false ]
+        then
+            # check to see if the file has changed
+            git diff --quiet "$f"; nochanges=$?
+            if [ "$nochanges" = 0 ] || \
+               [ "$f" -nt "$SCRIPTPATH/Recipes.pdf" ]
+            then
+                if [ "$verbose" = true ]
+                then
+                    echo "    $f unchanged."
+                fi
+
+            else
+
+                # increase the changed file counter
+                PDFCOUNT=$[PDFCOUNT + 1]
+            fi
+        else
+
+            # if force is set, then every file will be recompiled
+            PDFCOUNT=$[PDFCOUNT + 1]
+
+        fi
+
         title="${f%.*}"
         spaced_name=$(echo "$title" | \
                     sed -e 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/g' \
@@ -304,7 +331,7 @@ sec:$title}]{$recipe_dir/$f}"
 done
 
 # spin while individual recipes may still be compiling
-if [ "$a_flag" = true ] && [ "$FILECOUNT" -gt 0 ]
+if [ "$a_flag" = true ] && [ "$COMPILECOUNT" -gt 0 ]
 then
     spinner
 fi
@@ -334,7 +361,7 @@ fi
 if [ "$m_flag" = false ]
 then
 
-    if [ "$FILECOUNT" = 0 ]
+    if [ "$COMPILECOUNT" = 0 ]
     then
 
         if [ "$quiet" = false ]
@@ -342,7 +369,18 @@ then
             echo "No recipes have changed, so no compilation was attempted."
         fi
 
-        exit 0
+        exit 1
+    fi
+
+    if [ "$PDFCOUNT" = 0 ]
+    then
+
+        if [ "$quiet" = false ]
+        then
+            echo "No recipe PDFs have changed, so no output was attempted."
+        fi
+
+        exit 1
     fi
 
 
