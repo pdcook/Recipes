@@ -90,7 +90,7 @@ then
     # message with "Success." then we exit non-zero so that the original
     # push will be cancelled.
 
-    git push --no-verify --dry-run
+    git push --no-verify
     returncode=$?
     if [ "$returncode" = 0 ]
     then
