@@ -1,5 +1,9 @@
 #!/bin/bash
-# option for recompiling all recipes
+# get path to this script
+SCRIPT=`realpath $0`
+SCRIPTPATH=`dirname $SCRIPT`
+
+# option for recompiling all recipes that have been edited
 a_flag=false
 
 # option for just directly merging all pdfs instead of generating a basic book
@@ -17,6 +21,9 @@ s_flag=false
 # option to supress spinner
 quiet=false
 
+# force recompilation of all recipes
+force=false
+
 # path to output file
 output_file_path='Recipes.pdf'
 
@@ -33,7 +40,7 @@ Note: This script assumes each recipe's file name is the name of the recipe
 where:
     -h  show this help text
 
-    -a  recompile all recipes in parent directory
+    -a  recompile all recipes in parent directory that have been edited
 
     -d  path to parent directory containing all recipe directories [Default: .]
             Expected file structure:
@@ -51,6 +58,8 @@ where:
            |                   |...
            |                   |...
            |                   |...
+
+    -f force compile everything, even if some recipes have not been changed
 
     -m  directly merge all recipe pdfs instead of generating a basic book
 
@@ -77,6 +86,8 @@ while getopts 'asmd:o:vhxq' flag; do
        exit 0 ;;
     q) quiet=true
        verbose=false ;;
+    f) force=true
+       a_flag=true ;;
   esac
 done
 
@@ -157,7 +168,39 @@ for recipe_dir in */; do
     # if -a, then recompile all tex files in each recipe
     if [ "$a_flag" = true ]
     then
+
+        # keep track of number of recompiled files
+        FILECOUNT=0
+
         for f in *.tex; do
+
+
+                if [ "$force" = false ]
+                then
+                    # check to see if the file has changed
+                    git diff --quiet "$f"; nochanges=$?
+                    if [ "$nochanges" = 0 ] || \
+                       [ "$f" -nt "$SCRIPTPATH/Recipes.pdf" ]
+                    then
+                        if [ "$verbose" = true ]
+                        then
+                            echo "    $f unchanged, skipping compilation."
+                        fi
+
+                        continue
+
+                    else
+
+                        # increase the changed file counter
+                        FILECOUNT=$[FILECOUNT + 1]
+                    fi
+                else
+
+                    # if force is set, then every file will be recompiled
+                    FILECOUNT=$[FILECOUNT + 1]
+
+                fi
+
 
                 if [ "$verbose" = true ]
                 then
@@ -261,7 +304,7 @@ sec:$title}]{$recipe_dir/$f}"
 done
 
 # spin while individual recipes may still be compiling
-if [ "$a_flag" = true ]
+if [ "$a_flag" = true ] && [ "$FILECOUNT" -gt 0 ]
 then
     spinner
 fi
@@ -290,6 +333,19 @@ fi
 # if not -s compile the recipe book
 if [ "$m_flag" = false ]
 then
+
+    if [ "$FILECOUNT" = 0 ]
+    then
+
+        if [ "$quiet" = false ]
+        then
+            echo "No recipes have changed, so no compilation was attempted."
+        fi
+
+        exit 0
+    fi
+
+
     if [ "$verbose" = true ]
     then
         echo "Writing $output_file_path"
