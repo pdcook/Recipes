@@ -79,7 +79,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     kill "$PDF_PID" > /dev/null 2>&1
     echo "Push confirmed."
-    exit 0
+    git push --no-verify --dry-run
+    kill $$
+    exit 2
 else
     kill ${PDF_PID} > /dev/null 2>&1
     echo "Push cancelled."
