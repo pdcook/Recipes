@@ -186,8 +186,30 @@ for recipe_dir in */; do
                 if [ "$force" = false ]
                 then
                     # check to see if the file has changed
-                    git diff --quiet "$f"; nochanges=$?
-                    if [ "$nochanges" = 0 ] && \
+                    # is the pdf modified date newer than the source?
+                    # AND is the pdf creation date newer than the source
+                    #   modification date
+                    # AND does git diff show no changes to the .tex
+                    # AND is the compiled Recipes.pdf newer than the .tex
+
+                    git diff --quiet "$f"; nochanges=$? # git diff changes
+
+                    # date the pdf was created on
+                    creationdate="$(pdfinfo "${f%.*}.pdf" | \
+                           grep CreationDate | sed -e "s|CreationDate:\s*||g")"
+
+                    # convert to time since the epoch
+                    creationdate="$(date --date="$creationdate" +"%s")"
+
+                    # get the modification date of the tex file
+                    modificationdate="$(date -r "$f" +"%s")"
+
+                    echo "$creationdate"
+                    echo "$modificationdate"
+
+                    if [ "${f%.*}.pdf" -nt "$f" ] && \
+                       [ "$creationdate" -ge "$modificationdate" ] && \
+                       [ "$nochanges" = 0 ] && \
                        [ "$SCRIPTPATH/Recipes.pdf" -nt "$f" ]
                     then
                         if [ "$verbose" = true ]
