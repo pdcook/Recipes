@@ -79,8 +79,28 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     kill "$PDF_PID" > /dev/null 2>&1
     echo "Push confirmed."
+
+    # this is a TERRIBLE way of doing this, but it works
+
+    # since we may have run a git commit above in this pre-push script,
+    # that commit will not be included in the current push, so instead
+    # we call an extra push here, which has --no-verify so we don't end up
+    # in a permanent loop. if it is successful (exit code 0) then we spin
+    # up a background process that will overwrite the original push's error
+    # message with "Success." then we exit non-zero so that the original
+    # push will be cancelled.
+
     git push --no-verify --dry-run
-    kill $$
+    returncode=$?
+    if [ "$returncode" = 0 ]
+    then
+        {
+            sleep 0.01
+            echo -e "\r\033[1A\033[0K${green}${bold}Success.${normal}"
+        } &
+    else
+        echo "${bold}{$red}Push failed.${normal}"
+    fi
     exit 2
 else
     kill ${PDF_PID} > /dev/null 2>&1
