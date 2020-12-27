@@ -204,9 +204,6 @@ for recipe_dir in */; do
                     # get the modification date of the tex file
                     modificationdate="$(date -r "$f" +"%s")"
 
-                    echo "$creationdate"
-                    echo "$modificationdate"
-
                     if [ "${f%.*}.pdf" -nt "$f" ] && \
                        [ "$creationdate" -ge "$modificationdate" ] && \
                        [ "$nochanges" = 0 ] && \
@@ -415,9 +412,6 @@ fi
 # if not -s compile the recipe book
 if [ "$m_flag" = false ]
 then
-
-    echo "$COMPILECOUNT"
-    echo "$PDFCOUNT"
 
     if [ "$COMPILECOUNT" = 0 ]
     then
