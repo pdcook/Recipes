@@ -182,7 +182,7 @@ for recipe_dir in */; do
                     # check to see if the file has changed
                     git diff --quiet "$f"; nochanges=$?
                     if [ "$nochanges" = 0 ] || \
-                       [ "$f" -nt "$SCRIPTPATH/Recipes.pdf" ]
+                       [ "$SCRIPTPATH/Recipes.pdf" -nt "$f" ]
                     then
                         if [ "$verbose" = true ]
                         then
@@ -253,30 +253,6 @@ for recipe_dir in */; do
     # loop through all pdf files in recipe dir
     for f in *.pdf; do
 
-        if [ "$force" = false ]
-        then
-            # check to see if the file has changed
-            git diff --quiet "$f"; nochanges=$?
-            if [ "$nochanges" = 0 ] || \
-               [ "$f" -nt "$SCRIPTPATH/Recipes.pdf" ]
-            then
-                if [ "$verbose" = true ]
-                then
-                    echo "    $f unchanged."
-                fi
-
-            else
-
-                # increase the changed file counter
-                PDFCOUNT=$[PDFCOUNT + 1]
-            fi
-        else
-
-            # if force is set, then every file will be recompiled
-            PDFCOUNT=$[PDFCOUNT + 1]
-
-        fi
-
         title="${f%.*}"
         spaced_name=$(echo "$title" | \
                     sed -e 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/g' \
@@ -336,6 +312,48 @@ then
     spinner
 fi
 
+# check to see how many pdfs may have changed after possible compilation
+for recipe_dir in */; do
+
+    # move to recipe folder
+    cd "$recipe_dir"
+
+    for f in *.pdf; do
+
+        if [ "$force" = false ]
+        then
+            # check to see if the file has changed
+            git diff --quiet "$f"; nochanges=$?
+            if [ "$nochanges" = 0 ] || \
+               [ "$SCRIPTPATH/Recipes.pdf" -nt "$f" ]
+            then
+                if [ "$verbose" = true ]
+                then
+                    echo "$f unchanged."
+                fi
+
+            else
+
+                if [ "$verbose" = true ]
+                then
+                    echo "$f changed."
+                fi
+
+                # increase the changed file counter
+                PDFCOUNT=$[PDFCOUNT + 1]
+            fi
+        else
+
+            # if force is set, then every file will be recompiled
+            PDFCOUNT=$[PDFCOUNT + 1]
+
+        fi
+
+        # move back to parent dir
+        cd "$recipes_parent_dir"
+    done
+done
+
 # if -s output the merged pdf and exit 0
 if [ "$m_flag" = true ]
 then
@@ -361,6 +379,9 @@ fi
 if [ "$m_flag" = false ]
 then
 
+    echo "$COMPILECOUNT"
+    echo "$PDFCOUNT"
+
     if [ "$COMPILECOUNT" = 0 ]
     then
 
@@ -368,8 +389,6 @@ then
         then
             echo "No recipes have changed, so no compilation was attempted."
         fi
-
-        exit 1
     fi
 
     if [ "$PDFCOUNT" = 0 ]
@@ -379,6 +398,9 @@ then
         then
             echo "No recipe PDFs have changed, so no output was attempted."
         fi
+
+        touch "${output_file_path%.*}.tex"
+        touch "${output_file_path%.*}.pdf"
 
         exit 1
     fi
