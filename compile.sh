@@ -3,6 +3,12 @@
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
+# get terminal codes for colors, bold, and normal text
+bold=$(tput bold)
+normal=$(tput sgr0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+
 # option for recompiling all recipes that have been edited
 a_flag=false
 
@@ -181,7 +187,7 @@ for recipe_dir in */; do
                 then
                     # check to see if the file has changed
                     git diff --quiet "$f"; nochanges=$?
-                    if [ "$nochanges" = 0 ] || \
+                    if [ "$nochanges" = 0 ] && \
                        [ "$SCRIPTPATH/Recipes.pdf" -nt "$f" ]
                     then
                         if [ "$verbose" = true ]
@@ -192,6 +198,10 @@ for recipe_dir in */; do
                         continue
 
                     else
+                        if [ "$verbose" = true ]
+                        then
+                            echo "${green}${bold}    $f changed.${normal}"
+                        fi
 
                         # increase the changed file counter
                         COMPILECOUNT=$[COMPILECOUNT + 1]
@@ -312,6 +322,11 @@ then
     spinner
 fi
 
+if [ "$verbose" = true ]
+then
+    echo "Done."
+fi
+
 # check to see how many pdfs may have changed after possible compilation
 for recipe_dir in */; do
 
@@ -324,7 +339,7 @@ for recipe_dir in */; do
         then
             # check to see if the file has changed
             git diff --quiet "$f"; nochanges=$?
-            if [ "$nochanges" = 0 ] || \
+            if [ "$nochanges" = 0 ] && \
                [ "$SCRIPTPATH/Recipes.pdf" -nt "$f" ]
             then
                 if [ "$verbose" = true ]
@@ -336,7 +351,7 @@ for recipe_dir in */; do
 
                 if [ "$verbose" = true ]
                 then
-                    echo "$f changed."
+                    echo "${green}${bold}$f changed.${normal}"
                 fi
 
                 # increase the changed file counter
@@ -359,7 +374,7 @@ if [ "$m_flag" = true ]
 then
     if [ "$verbose" = true ]
     then
-        echo "Writing $output_file_path"
+        echo "Writing $output_file_path..."
     fi
 
     pdftk "$tmp_dir"/*.pdf cat output "$output_file_path" &
@@ -387,7 +402,7 @@ then
 
         if [ "$quiet" = false ]
         then
-            echo "No recipes have changed, so no compilation was attempted."
+            echo "${red}No recipes have changed, so no compilation was attempted.${normal}"
         fi
     fi
 
@@ -396,7 +411,7 @@ then
 
         if [ "$quiet" = false ]
         then
-            echo "No recipe PDFs have changed, so no output was attempted."
+            echo "${red}${bold}No recipe PDFs have changed, so no output was attempted.${normal}"
         fi
 
         touch "${output_file_path%.*}.tex"
@@ -408,7 +423,7 @@ then
 
     if [ "$verbose" = true ]
     then
-        echo "Writing $output_file_path"
+        echo "Writing $output_file_path..."
     fi
 
     tex_contents="$tex_contents
