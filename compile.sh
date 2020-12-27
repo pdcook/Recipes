@@ -3,10 +3,19 @@
 a_flag=false
 
 # option for just directly merging all pdfs instead of generating a basic book
-s_flag=false
+m_flag=false
 
 # verbose option
 verbose=false
+
+# EXTRA verbose (FULL LaTeX output)
+extra=false
+
+# option to run slower (one process at a time)
+s_flag=false
+
+# option to supress spinner
+quiet=false
 
 # path to output file
 output_file_path='Recipes.pdf'
@@ -14,7 +23,7 @@ output_file_path='Recipes.pdf'
 # path to parent directory which is home to all recipe pdfs
 recipes_parent_dir="$PWD"
 
-usage="$(basename "$0") [-h] [-adsov] -- combine all recipes
+usage="$(basename "$0") [-h] [-admoqsvx] -- combine all recipes
 
 Note: This script assumes each recipe's file name is the name of the recipe
       written in CamelCase. For example, for a fresh strawberry oatmeal recipe,
@@ -43,32 +52,59 @@ where:
            |                   |...
            |                   |...
 
-    -s  directly merge all recipe pdfs instead of generating a basic book
+    -m  directly merge all recipe pdfs instead of generating a basic book
+
+    -s  run slower, usually for debug purposes
 
     -o  path to output file [Default: Recipes.pdf]
 
-    -v  verbose"
+    -q  quiet, supress all console output
 
+    -v  verbose
 
-while getopts 'asd:o:vh' flag; do
+    -x  EXTRA verbose (show all LaTeX compiler output"
+
+while getopts 'asmd:o:vhxq' flag; do
   case "${flag}" in
     a) a_flag=true ;;
+    m) m_flag=true ;;
     s) s_flag=true ;;
     d) recipes_parent_dir="${OPTARG}" ;;
     o) output_file_path="${OPTARG}" ;;
     v) verbose=true ;;
+    x) extra=true ;;
     h) echo "$usage"
        exit 0 ;;
+    q) quiet=true
+       verbose=false ;;
   esac
 done
 
-# start
+# a fancy spinor while things are working
+spinner()
+{
+    local pid=$!
+    local delay=0.15
+    local spinstr='|/-\'
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        local temp=${spinstr#?}
+        if [ "$quiet" = false ]
+        then
+            printf "[%c]" "$spinstr"
+        fi
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf "    \b\b\b\b"
+}
 
+# start
 # move to parent dir
 cd "$recipes_parent_dir"
 
 # if -s, preform some setup
-if [ "$s_flag" = true ]
+if [ "$m_flag" = true ]
 then
     tmp_dir="$recipes_parent_dir/.tmp"
     bookmarks_file="$tmp_dir/bookmarks.txt"
@@ -83,28 +119,25 @@ BookmarkPageNumber: 1
 fi
 
 # if not -s, preform different setup
-if [ "$s_flag" = false ]
+if [ "$m_flag" = false ]
 then
     # this is a silly way of doing this, but it works
     tex_start="\\RequirePackage{recipebook}
-    \\usepackage{tocloft}
-    \\renewcommand\\numberline[1]{} % removes numbers from ToC
+\\usepackage{tocloft}
+\\renewcommand\\numberline[1]{} % removes numbers from ToC
+\\renewcommand{\contentsname}{Index}
 
-    \\begin{document}
-    \\maketitle
-    \\setlength{\\columnseprule}{0.5pt}
-    \\tableofcontents
-    \\addtocontents{toc}{\\protect\\thispagestyle{empty}}
-    \\pagenumbering{gobble}
-    \\setlength{\\columnseprule}{0pt}
+\\begin{document}
+\\maketitle
+\\setlength{\\columnseprule}{0.5pt}
+\\tableofcontents
+\\addtocontents{toc}{\\protect\\thispagestyle{empty}}
+\\pagenumbering{gobble}
+\\setlength{\\columnseprule}{0pt}
 
-    \\pagenumbering{arabic}
+\\pagenumbering{arabic}"
 
-    \\begin{samepage}"
-
-    tex_end="\\end{samepage}
-
-    \\end{document}"
+    tex_end="\\end{document}"
 
     tex_contents="$tex_start"
 
@@ -131,8 +164,43 @@ for recipe_dir in */; do
                     echo "    Compiling $f..."
                 fi
 
-                pdflatex "$f" > /dev/null 2>&1
-                pdflatex "$f" > /dev/null 2>&1
+                if [ "$extra" = false ]
+                then
+                    if [ "$s_flag" = false ]
+                    then
+                        {
+                        pdflatex "$f" > /dev/null 2>&1
+                        pdflatex "$f" > /dev/null 2>&1
+                        } &
+                    fi
+
+                    if [ "$s_flag" = true ]
+                    then
+                        pdflatex "$f" > /dev/null 2>&1 &
+                        spinner
+                        pdflatex "$f" > /dev/null 2>&1 &
+                        spinner
+                    fi
+                fi
+
+                if [ "$extra" = true ]
+                then
+                    if [ "$s_flag" = false ]
+                    then
+                        {
+                        pdflatex "$f"
+                        pdflatex "$f"
+                        } &
+                    fi
+
+                    if [ "$s_flag" = true ]
+                    then
+                        pdflatex "$f" &
+                        spinner
+                        pdflatex "$f" &
+                        spinner
+                    fi
+                fi
 
         done
     fi
@@ -150,7 +218,7 @@ for recipe_dir in */; do
         fi
 
         # if -s, then just merge the pdfs and be done
-        if [ "$s_flag" = true ]
+        if [ "$m_flag" = true ]
         then
 
             # make bookmarks for pdfs and prepare them for merge
@@ -171,14 +239,14 @@ for recipe_dir in */; do
         fi
 
         # if not -s, then create the basic recipe book (in a very dumb way)
-        if [ "$s_flag" = false ]
+        if [ "$m_flag" = false ]
         then
             if [ "$verbose" = true ]
             then
                 echo "        Writing TeX entry..."
             fi
             tex_contents="$tex_contents
-\includepdf[linktodoc=true,pages=-,addtotoc={1,section,1, $spaced_name, \
+\includepdf[pagecommand={\\thispagestyle{fancy}},linktodoc=true,pages=-,addtotoc={1,section,1, $spaced_name, \
 sec:$title}]{$recipe_dir/$f}"
             if [ "$verbose" = true ]
             then
@@ -192,15 +260,19 @@ sec:$title}]{$recipe_dir/$f}"
     cd "$recipes_parent_dir"
 done
 
+# spin while individual recipes may still be compiling
+spinner
+
 # if -s output the merged pdf and exit 0
-if [ "$s_flag" = true ]
+if [ "$m_flag" = true ]
 then
     if [ "$verbose" = true ]
     then
         echo "Writing $output_file_path"
     fi
 
-    pdftk "$tmp_dir"/*.pdf cat output "$output_file_path"
+    pdftk "$tmp_dir"/*.pdf cat output "$output_file_path" &
+    spinner
 
     if [ "$verbose" = true ]
     then
@@ -213,7 +285,7 @@ then
 fi
 
 # if not -s compile the recipe book
-if [ "$s_flag" = false ]
+if [ "$m_flag" = false ]
 then
     if [ "$verbose" = true ]
     then
@@ -223,11 +295,25 @@ then
     tex_contents="$tex_contents
 $tex_end"
 
-
     echo "$tex_contents" > "${output_file_path%.*}.tex"
 
-    pdflatex "${output_file_path%.*}.tex"
-    pdflatex "${output_file_path%.*}.tex"
+    if [ "$extra" = false ]
+    then
+        {
+        pdflatex "${output_file_path%.*}.tex" > /dev/null 2>&1
+        pdflatex "${output_file_path%.*}.tex" > /dev/null 2>&1
+        } &
+        spinner
+    fi
+
+    if [ "$extra" = true ]
+    then
+        {
+        pdflatex "${output_file_path%.*}.tex"
+        pdflatex "${output_file_path%.*}.tex"
+        } &
+        spinner
+    fi
 
     if [ "$verbose" = true ]
     then
