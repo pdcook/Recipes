@@ -261,7 +261,10 @@ sec:$title}]{$recipe_dir/$f}"
 done
 
 # spin while individual recipes may still be compiling
-spinner
+if [ "$a_flag" = true ]
+then
+    spinner
+fi
 
 # if -s output the merged pdf and exit 0
 if [ "$m_flag" = true ]
