@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# get terminal codes for colors, bold, and normal text
+bold=$(tput bold)
+normal=$(tput sgr0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+
 # set terminal name
 NAME="git pre-push hook"; echo -en "\033]0;$NAME\a"
 
@@ -21,16 +27,33 @@ git push <remote> <branch> --no-verify"
 # temporarily move to GITROOT
 cd "$GITROOT"
 
-./compile.sh -a
+while true; do
 
-returncode=$?
+    ./compile.sh -a
 
-if [ "$returncode" -ne 0 ]
-then
-    echo "Compilation failed or there was nothing new to compile."
-    echo "Aborting push."
-    exit 1
-fi
+    returncode=$?
+
+    if [ "$returncode" -eq 0 ]
+    then
+        echo "${bold}${red}There are changes to Recipes.pdf, \
+please commit them before pushing.${normal}"
+        echo "$(git status)"
+        read -p "${green}Would you like to automatically commit all of them \
+now? [y/n] ${normal}" -n 1 -r
+        echo
+
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            git commit -a -m "$(read -p 'Commit description: ')"
+        else
+            echo "Aborting push."
+            exit 1
+        fi
+    else
+        break
+    fi
+
+done
 
 # move back to where the script was originally ran
 cd "$DIR"
