@@ -73,7 +73,7 @@ where:
 
     -x  EXTRA verbose (show all LaTeX compiler output"
 
-while getopts 'asmd:o:vhxq' flag; do
+while getopts 'asmd:o:vhxqf' flag; do
   case "${flag}" in
     a) a_flag=true ;;
     m) m_flag=true ;;
