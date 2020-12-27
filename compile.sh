@@ -433,7 +433,8 @@ then
         touch "${output_file_path%.*}.tex"
         touch "${output_file_path%.*}.pdf"
 
-        exit 1
+        # special exit code which symbolizes that everything is up to date
+        exit 3
     fi
 
 
