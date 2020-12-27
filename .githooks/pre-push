@@ -1,23 +1,63 @@
 #!/bin/bash
 
+# set terminal name
+NAME="git pre-push hook"; echo -en "\033]0;$NAME\a"
+
 # this script reassembles the Recipes.pdf before every push
+
+# Allows us to read user input below, assigns stdin to keyboard
+exec < /dev/tty
 
 # get the top-level directory for the repo
 GITROOT="$(git rev-parse --show-toplevel)"
 
-bash "$GITROOT/compile.sh -a"
+DIR="$PWD"
 
-xdg-open "$GITROOT/Recipes.pdf" &
-PDF_PID=$!
+# let the user know what's going on
+echo "Compiling Recipes.pdf before push.
+You can skip this by using
+git push <remote> <branch> --no-verify"
+
+# temporarily move to GITROOT
+cd "$GITROOT"
+
+./compile.sh -a
+
+returncode=$?
+
+if [ "$returncode" -ne 0 ]
+then
+    echo "Compilation failed or there was nothing new to compile."
+    echo "Aborting push."
+    exit 1
+fi
+
+# move back to where the script was originally ran
+cd "$DIR"
+
+# check to see if evince and wmctrl are installed
+
+if command -v evince > /dev/null 2>&1 && \
+    command -v wmctrl > /dev/null 2>&1 ; then
+    evince "$GITROOT/Recipes.pdf" &
+    PDF_PID=$!
+    sleep 0.5
+    wmctrl -a "git pre-push hook"
+else
+    xdg-open "$GITROOT/Recipes.pdf" &
+    PDF_PID=$!
+fi
 
 read -p "Please review the PDF and confirm it is correct. [y/n] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    kill "$PDF_PID"
+    kill "$PDF_PID" > /dev/null 2>&1
+    echo "Push confirmed."
     exit 0
 else
-    kill "$PDF_PID"
+    kill ${PDF_PID} > /dev/null 2>&1
+    echo "Push cancelled."
     exit 1
 fi
 
