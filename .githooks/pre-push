@@ -44,7 +44,8 @@ now? [y/n] ${normal}" -n 1 -r
 
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
-            git commit -a -m "$(read -p 'Commit description: ')"
+            read -p "Commit description: " desc
+            git commit -a -m "$desc"
         else
             echo "Aborting push."
             exit 1
