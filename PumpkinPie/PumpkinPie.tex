@@ -1,0 +1,85 @@
+\RequirePackage{../recipe}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Recipe Formatting %%%%%%%
+
+% add your formatting for the first page here
+\fancypagestyle{firstpage}{%
+    % here is an example
+    \prepcooktime{20 minutes + chilling time (1+ hour)}{1 hour}
+    \dessert
+    \serves{6}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% start the recipe with the \recipe command
+\recipe{Pumpkin Pie}
+% set the formatting for the first page only
+\thispagestyle{firstpage}
+% sign every page with name and url
+\sign{Jessica Ullom-Minnich and Patrick Cook}{https://github.com/pdcook/Recipes}
+
+% begin writing the recipe
+\ingredients
+
+\begin{minipage}{\textwidth}
+\begin{multicols*}{2}
+\begin{minipage}{\linewidth}
+\ingredients[Filling]
+\vspace{-1.5em}
+\begin{itemize}
+    \item 1 $16$ oz.\ can pumpkin puree
+    \item 1 $14$ oz.\ can sweetened condensed milk
+    \item 2 eggs
+    \item 2 tsp vanilla extract
+    \item 1 tsp pumpkin pie space
+    \item 1 tsp nutmeg
+    \item 1 tsp cinnamon
+\end{itemize}
+\end{minipage}
+\columnbreak
+
+\begin{minipage}{\linewidth}
+\ingredients[Crust]
+\vspace{-1.5em}
+\begin{itemize}
+    \item $1\frac{1}{2}$ cups graham crackers, finely ground
+    \item $1/3$ cup granulated sugar
+    \item $6$ tbsp salted butter, melted
+    \item $1/2$ tsp pumpkin pie spice
+    \item $1/2$ tsp nutmeg
+    \item $1/2$ tsp cinnamon
+\end{itemize}
+
+\vspace{1em}
+\ingredients[Garnish]
+\vspace{-1.5em}
+\begin{itemize}
+    \item cool whip
+    \item pumpkin pie spice
+\end{itemize}
+\end{minipage}
+\end{multicols*}
+\end{minipage}
+\vspace{1em}
+
+\instructions
+Procure a $9$ in.\ pie pan and plastic wrap.
+\begin{enumerate}
+    \item Crush the graham crackers into fine crumbs and separately melt the butter.
+    \item In a medium mixing bowl, combine all the ingredients for the crust. Mix together until homogeneous.
+    \item Press the mixture into the pie pan by dropping a couple spoonfuls in at a time and pressing down firmly. Ensure the crust mixture covers the entire surface of the pie pan, including the walls.
+    \item Cover with plastic wrap and let chill in refrigerator for at least an hour and up to overnight.
+    \item Once the pie crust has finished chilling, preheat the oven to \temp{425} and \textbf{leave the pie crust in the fridge.}
+    \item In a medium mixing bowl mix together all the ingredients for the filling until homogeneous.
+    \item Remove pie crust from fridge and pour pie filling into the crust. Shake gently to level filling.
+    \item Bake at \temp{425} for $15$ minutes.
+    \item Change the oven temperature to \temp{350}---do not remove the pie from the oven. Bake at this new temperature for $35$ to $40$ minutes, until the filling is set.\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[2]{The filling with firm up as the pie cools, so it may still be soft---but \textbf{not} liquid.}\renewcommand{\thefootnote}{\arabic{footnote}}
+    \item Immediately after removing from the oven, garnish with additional pumpkin pie spice as desired.
+    \item Allow to cool completely. Set in fridge until chilled completely. Serve cold with cool whip.
+\end{enumerate}
+
+\spewfootnotes
+
+\end{document}
