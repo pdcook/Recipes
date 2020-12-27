@@ -51,6 +51,7 @@ now? [y/n] ${normal}" -n 1 -r
             exit 1
         fi
     else
+        echo "${green}${bold}Recipes.pdf up to date. Ready for push.${normal}"
         break
     fi
 
