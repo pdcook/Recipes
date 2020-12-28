@@ -12,6 +12,9 @@ green=$(tput setaf 2)
 # option for recompiling all recipes that have been edited
 a_flag=false
 
+# option to make a booklet cannot be used with merge option (-m)
+b_flag=false
+
 # option for just directly merging all pdfs instead of generating a basic book
 m_flag=false
 
@@ -36,7 +39,7 @@ output_file_path='Recipes.pdf'
 # path to parent directory which is home to all recipe pdfs
 recipes_parent_dir="$PWD"
 
-usage="$(basename "$0") [-h] [-admoqsvx] -- combine all recipes
+usage="$(basename "$0") [-h] [-abdmoqsvx] -- combine all recipes
 
 Note: This script assumes each recipe's file name is the name of the recipe
       written in CamelCase. For example, for a fresh strawberry oatmeal recipe,
@@ -47,6 +50,8 @@ where:
     -h  show this help text
 
     -a  recompile all recipes in parent directory that have been edited
+
+    -b  compile a printable booklet as well (cannot be used with -m)
 
     -d  path to parent directory containing all recipe directories [Default: .]
             Expected file structure:
@@ -68,6 +73,7 @@ where:
     -f force compile everything, even if some recipes have not been changed
 
     -m  directly merge all recipe pdfs instead of generating a basic book
+            (cannot be used with -b)
 
     -s  run slower, usually for debug purposes
 
@@ -79,9 +85,10 @@ where:
 
     -x  EXTRA verbose (show all LaTeX compiler output"
 
-while getopts 'asmd:o:vhxqf' flag; do
+while getopts 'absmd:o:vhxqf' flag; do
   case "${flag}" in
     a) a_flag=true ;;
+    b) b_flag=true ;;
     m) m_flag=true ;;
     s) s_flag=true ;;
     d) recipes_parent_dir="${OPTARG}" ;;
@@ -97,13 +104,25 @@ while getopts 'asmd:o:vhxqf' flag; do
   esac
 done
 
+if [ "$b_flag" = true ] && [ "$m_flag" = true ]
+then
+    if [ "$quiet" = false ]
+    then
+        echo "FAILED: -b and -m cannot be used together."
+    fi
+
+    exit 1
+fi
+
 # a fancy spinor while things are working
 spinner()
 {
-    local pid=$!
     local delay=0.15
     local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+    pgrep --parent $$ > /dev/null 2>&1
+    nonzerochildren=$?
+    while [ "$nonzerochildren" = 0 ]; do
+
         local temp=${spinstr#?}
         if [ "$quiet" = false ]
         then
@@ -112,6 +131,9 @@ spinner()
         local spinstr=$temp${spinstr%"$temp"}
         sleep $delay
         printf "\b\b\b\b\b\b"
+
+        pgrep --parent $$ > /dev/null 2>&1
+        nonzerochildren=$?
     done
     printf "    \b\b\b\b"
 }
@@ -469,6 +491,31 @@ $tex_end"
     if [ "$verbose" = true ]
     then
         echo "Done."
+    fi
+
+    # make booklet if desired
+    if [ "$b_flag" = true ]
+    then
+
+        if [ "$verbose" = true ]
+        then
+            echo "Assembling booklet..."
+        fi
+
+        if [ "$extra" = true ]
+        then
+            pdfbook2 --short-edge -p letterpaper -i 50 -o 50 -t 0 -b 0 --resolution=150 "${output_file_path%.*}.pdf" &
+        else
+            pdfbook2 --short-edge -p letterpaper -i 50 -o 50 -t 0 -b 0 --resolution=150 "${output_file_path%.*}.pdf" > /dev/null 2>&1 &
+        fi
+
+        spinner
+
+        if [ "$verbose" = true ]
+        then
+            echo "Done."
+        fi
+
     fi
 
     exit 0
