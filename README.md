@@ -10,3 +10,7 @@ If you'd like to write a recipe of your own in this format, feel free to use the
 ---
 
 To enable the git hook which automatically recompiles the recipe book before each push, simply run `git config --local core.hooksPath .githooks/` from within the repo.
+
+---
+
+To assemble a booklet, be sure to invoke `./compile.sh` with the `-b` option. To print, select double-sided (short-edge) and landscape.
