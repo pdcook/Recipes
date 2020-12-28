@@ -2,7 +2,7 @@
 \ProvidesPackage{recipebook}
   [Recipe Book Styling 2020]
 
-\documentclass{article}
+\documentclass[twoside]{article}
 \RequirePackage{multicol}
 \RequirePackage[toc]{multitoc}
 \renewcommand*{\multicolumntoc}{2}
@@ -22,8 +22,8 @@
 % Clear the header and footer
 \fancyhead{}
 \fancyfoot{}
-% Set the right side of the footer to be the page number
-\fancyhead[R]{\Huge{\thepage}}
+% place the page number in the header
+\fancyhead[LE,RO]{\Huge{\thepage}}
 
 \RequirePackage{tablefootnote}
 \renewcommand{\headrulewidth}{0pt}
