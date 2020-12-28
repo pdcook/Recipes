@@ -142,7 +142,7 @@ spinner()
 # move to parent dir
 cd "$recipes_parent_dir"
 
-# if -s, preform some setup
+# if -m, preform some setup
 if [ "$m_flag" = true ]
 then
     tmp_dir="$recipes_parent_dir/.tmp"
@@ -157,7 +157,7 @@ BookmarkPageNumber: 1
     mkdir -p "$tmp_dir"
 fi
 
-# if not -s, preform different setup
+# if not -m, preform different setup
 if [ "$m_flag" = false ]
 then
     # this is a silly way of doing this, but it works
@@ -314,7 +314,7 @@ for recipe_dir in */; do
             echo "    $spaced_name"
         fi
 
-        # if -s, then just merge the pdfs and be done
+        # if -m, then just merge the pdfs and be done
         if [ "$m_flag" = true ]
         then
 
@@ -335,7 +335,7 @@ for recipe_dir in */; do
 
         fi
 
-        # if not -s, then create the basic recipe book (in a very dumb way)
+        # if not -m, then create the basic recipe book (in a very dumb way)
         if [ "$m_flag" = false ]
         then
             if [ "$verbose" = true ]
@@ -410,7 +410,7 @@ for recipe_dir in */; do
     done
 done
 
-# if -s output the merged pdf and exit 0
+# if -m output the merged pdf and exit 0
 if [ "$m_flag" = true ]
 then
     if [ "$verbose" = true ]
@@ -431,7 +431,7 @@ then
     exit 0
 fi
 
-# if not -s compile the recipe book
+# if not -m compile the recipe book
 if [ "$m_flag" = false ]
 then
 
